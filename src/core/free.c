@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sxriimu <sxriimu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 19:23:15 by sberete           #+#    #+#             */
-/*   Updated: 2025/12/25 21:07:27 by sberete          ###   ########.fr       */
+/*   Updated: 2026/01/02 18:27:15 by sxriimu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@ static void	free_map(t_map *map)
 	if (map->grid)
 		free_tab(map->grid);
 	free(map->doors);
-	/*if (map->color.ceiling)
+	if (map->color.ceiling)
 		free(map->color.ceiling);
 	if (map->color.floor)
 		free(map->color.floor);
-	if (map->texture.east)
-		free(map->texture.east);
-	if (map->texture.north)
-		free(map->texture.north);
-	if (map->texture.west)
-		free(map->texture.west);
-	if (map->texture.south)
-		free(map->texture.south);*/
+	if (map->path.east)
+		free(map->path.east);
+	if (map->path.north)
+		free(map->path.north);
+	if (map->path.west)
+		free(map->path.west);
+	if (map->path.south)
+		free(map->path.south);
 }
 
 void	free_all(t_data *cub3D)

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/26 09:51:35 by sberete           #+#    #+#             */
-/*   Updated: 2025/12/27 01:50:39 by sberete          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -49,6 +37,10 @@
 # define COLOR_WALL GRAY
 # define COLOR_FLOOR WHITE
 # define MAX_DOORS 64
+
+/* ************************************************************************** */
+/*                                  STRUCTS                                   */
+/* ************************************************************************** */
 
 typedef struct s_point
 {
@@ -99,19 +91,6 @@ typedef struct s_door
 	int			opening;
 }				t_door;
 
-typedef struct s_map
-{
-	char		*name;
-	char		**grid;
-	int			width;
-	int			height;
-	t_path		path;
-	t_texture	texture;
-	t_color		color;
-	t_door		*doors;
-	int			door_count;
-}				t_map;
-
 typedef struct s_direction
 {
 	double		x;
@@ -139,6 +118,24 @@ typedef struct s_move
 	int			rotate_left;
 	int			rotate_right;
 }				t_move;
+
+typedef struct s_map
+{
+	char		*name;
+	char		**grid;
+	int			width;
+	int			height;
+	t_path		path;
+	t_texture	texture;
+	t_color		color;
+	t_door		*doors;
+	int			door_count;
+
+	// pour le parsing et flood-fill
+	int			player_x;
+	int			player_y;
+	char		player_dir;
+}				t_map;
 
 typedef struct s_player
 {
@@ -192,38 +189,69 @@ typedef struct s_data
 	t_ray		ray;
 }				t_data;
 
+/* ************************************************************************** */
+/*                                PARSING                                      */
+/* ************************************************************************** */
+
 int				parsing(t_data *cub3d, int argc, char **argv);
 
+/* map read */
+char			**read_map(int fd);
+char			**append_line(char **map, char *line);
+
+/* map utils */
+int				is_map_line(char *line);
+int				is_line_empty(char *line);
+int				get_max_width(char **map);
+int				get_height(char **map);
+char			**normalize_map(char **map);
+char			**copy_map(t_map *grid);
+int				flood_fill(char **map, int x, int y, t_map *grid);
+int				check_map_closed(t_map *grid);
+int				check_map_char(t_map *map);
+int				check_map_player(t_map *map);
+int				check_map_empty_lines(t_map *map);
+
+/* config parsing */
+void			parsing_textures(int fd, t_path *path);
+void			parsing_colors(int fd, t_color *color);
+
+/* utils */
+int				convert_rgb_string(char *str);
+void			free_map(char **map);
+
+/* gameplay init */
+void			add_door(t_data *cub3d, int x, int y);
+void			set_player_dir(t_player *p, char c);
+void			init_player_plane(t_player *player);
+void			init_player_from_map(t_data *cub3d, int x, int y, char c);
+void			parse_map_grid(t_data *cub3d);
+
+/* textures */
+int				load_all_textures(t_data *cub3d);
+
+/* render / mlx */
 void			mlx_hookes(t_data *cub3d);
 int				key_press(int keycode, t_data *cub3d);
 int				key_release(int keycode, t_data *cub3d);
 int				mouse_move(int x, int y, t_data *cub3d);
 
+/* game helpers */
 int				free_all_and_exit(t_data *cub3d);
 void			put_pixel(t_img *img, int x, int y, int color);
 void			mlx_failure(t_data *cub3D, char *str);
 void			param_available(void);
 void			cub3d_init(t_data *cub3d);
-
-int				load_all_textures(t_data *cub3d);
-int				convert_rgb_string(char *str);
-
 void			update_doors(t_map *map);
 void			interact(t_data *cub3d);
 t_door			*find_door(t_map *map, int x, int y);
-void			add_door(t_data *cub3d, int x, int y);
-
 void			update_player_position(t_data *cub3d);
 void			move_player(t_data *cub3d, double dir_x, double dir_y,
 					double speed);
 void			rotate_player(t_data *cub3d, double angle);
-void			init_player_plane(t_player *player);
-void			set_player_dir(t_player *p, char c);
-
 void			draw_scene(t_data *cub3d);
 void			draw_scene_3d(t_data *cub3d);
 void			perform_dda(t_data *cub3d, t_ray *ray);
-
 void			init_ray(t_data *cub3d, int x, t_ray *ray);
 void			init_step(t_data *cub3d, t_ray *ray);
 double			compute_perp_dist(t_data *cub3d, t_ray *ray);
@@ -232,7 +260,6 @@ t_img			*get_texture(t_data *cub3d, t_ray *ray);
 void			draw_tex_stripe(t_data *cub3d, t_texinfo t, t_col c);
 void			compute_draw_limits(double dist, int *line_h, int *start,
 					int *end);
-
 void			draw_minimap(t_data *cub3d);
 int				is_wall(t_data *cub3d, double x, double y);
 

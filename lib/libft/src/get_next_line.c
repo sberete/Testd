@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sxriimu <sxriimu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 09:51:56 by sberete           #+#    #+#             */
-/*   Updated: 2025/11/26 09:51:57 by sberete          ###   ########.fr       */
+/*   Updated: 2026/01/02 17:05:21 by sxriimu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,15 @@ char	*get_next_line(int fd)
 		if (bits == 0)
 			break ;
 		buffer[bits] = '\0';
-		str = ft_strjoin(str, buffer);
-		if (ft_strchr(str, '\n') != NULL)
+		if (!str)
+			str = ft_strdup(buffer);
+		else
+		{
+			char *tmp = ft_strjoin(str, buffer);
+			free(str);
+			str = tmp;
+		}
+		if (str && ft_strchr(str, '\n'))
 			break ;
 	}
 	new_line = get_line(str);
