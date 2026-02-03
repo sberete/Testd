@@ -190,7 +190,7 @@ typedef struct s_data
 }				t_data;
 
 /* ************************************************************************** */
-/*                                PARSING                                      */
+/*                                PARSING                                     */
 /* ************************************************************************** */
 
 int				parsing(t_data *cub3d, int argc, char **argv);
@@ -218,7 +218,7 @@ void			parsing_colors(int fd, t_color *color);
 
 /* utils */
 int				convert_rgb_string(char *str);
-void			free_map(char **map);
+// void			free_map(char **map);
 
 /* gameplay init */
 void			add_door(t_data *cub3d, int x, int y);
