@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3D.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sxriimu <sxriimu@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/05 19:46:50 by sxriimu           #+#    #+#             */
+/*   Updated: 2026/02/05 19:46:51 by sxriimu          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -35,8 +47,11 @@
 # define GRAY 0x00808080
 
 # define COLOR_WALL GRAY
+# define COLOR_DOOR BLACK
 # define COLOR_FLOOR WHITE
 # define MAX_DOORS 64
+# define MIN_MAP_WIDTH 3
+# define MIN_MAP_HEIGHT 3
 
 /* ************************************************************************** */
 /*                                  STRUCTS                                   */
@@ -131,10 +146,9 @@ typedef struct s_map
 	t_door		*doors;
 	int			door_count;
 
-	// pour le parsing et flood-fill
-	int			player_x;
-	int			player_y;
-	char		player_dir;
+	// int			player_x;
+	// int			player_y;
+	// char		player_dir;
 }				t_map;
 
 typedef struct s_player
@@ -143,6 +157,7 @@ typedef struct s_player
 	t_direction	dir;
 	t_plane		plane;
 	t_position	pos;
+	int			count;
 }				t_player;
 
 typedef struct s_ray
@@ -206,7 +221,6 @@ int				get_max_width(char **map);
 int				get_height(char **map);
 char			**normalize_map(char **map);
 char			**copy_map(t_map *grid);
-int				flood_fill(char **map, int x, int y, t_map *grid);
 int				check_map_closed(t_map *grid);
 int				check_map_char(t_map *map);
 int				check_map_player(t_map *map);
