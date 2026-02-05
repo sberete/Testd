@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/05 20:43:02 by sberete           #+#    #+#             */
+/*   Updated: 2026/02/05 21:11:49 by sberete          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
-static int	has_xpm_extension(char *path)
+int	has_xpm_extension(char *path)
 {
 	int	len;
 
@@ -12,7 +24,7 @@ static int	has_xpm_extension(char *path)
 	return (!ft_strcmp(path + len - 4, ".xpm"));
 }
 
-static int	has_cub_extension(char *filename)
+int	has_cub_extension(char *filename)
 {
 	int	len;
 
@@ -43,7 +55,7 @@ char	*ft_strtrim_all(char *s)
 
 int	is_empty(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (line[i])

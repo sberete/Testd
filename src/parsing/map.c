@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/05 20:57:37 by sberete           #+#    #+#             */
+/*   Updated: 2026/02/05 21:59:29 by sberete          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 static int	parse_cell(t_data *cub3d, int x, int y, char c)
@@ -10,7 +22,7 @@ static int	parse_cell(t_data *cub3d, int x, int y, char c)
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
 		if (cub3d->player.count > 0)
-			return (-1); // plusieurs joueurs
+			return (-1);
 		cub3d->player.count++;
 		init_player_from_map(cub3d, x, y, c);
 		return (1);
@@ -22,11 +34,9 @@ void	parse_map_grid(t_data *cub3d)
 {
 	size_t	len;
 	int		res;
+	size_t	y;
+	size_t	x;
 
-	size_t y, x;
-	cub3d->map.width = 0;
-	cub3d->map.height = 0;
-	cub3d->player.count = 0;
 	y = 0;
 	while (cub3d->map.grid[y])
 	{

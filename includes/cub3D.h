@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sxriimu <sxriimu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:46:50 by sxriimu           #+#    #+#             */
-/*   Updated: 2026/02/05 19:46:51 by sxriimu          ###   ########.fr       */
+/*   Updated: 2026/02/05 21:11:06 by sberete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,10 +145,6 @@ typedef struct s_map
 	t_color		color;
 	t_door		*doors;
 	int			door_count;
-
-	// int			player_x;
-	// int			player_y;
-	// char		player_dir;
 }				t_map;
 
 typedef struct s_player
@@ -209,10 +205,12 @@ typedef struct s_data
 /* ************************************************************************** */
 
 int				parsing(t_data *cub3d, int argc, char **argv);
-
-/* map read */
-char			**read_map(int fd);
-char			**append_line(char **map, char *line);
+int				parse_cub_file(t_data *cub3d, char *path);
+int				parse_cub_line(t_data *cub3d, char *line);
+int				parse_texture_line(t_data *cub3d, char *line);
+int				parse_color_line(t_data *cub3d, char *line);
+void			add_map_line(t_data *cub3d, char *line);
+void			normalize_map_grid(t_data *cub3d);
 
 /* map utils */
 int				is_map_line(char *line);
@@ -225,14 +223,10 @@ int				check_map_closed(t_map *grid);
 int				check_map_char(t_map *map);
 int				check_map_player(t_map *map);
 int				check_map_empty_lines(t_map *map);
+int				validate_map(t_data *cub3d);
 
-/* config parsing */
-void			parsing_textures(int fd, t_path *path);
-void			parsing_colors(int fd, t_color *color);
-
-/* utils */
+/* color utils */
 int				convert_rgb_string(char *str);
-// void			free_map(char **map);
 
 /* gameplay init */
 void			add_door(t_data *cub3d, int x, int y);
@@ -276,5 +270,14 @@ void			compute_draw_limits(double dist, int *line_h, int *start,
 					int *end);
 void			draw_minimap(t_data *cub3d);
 int				is_wall(t_data *cub3d, double x, double y);
+
+/* utils */
+char			*ft_strtrim_all(char *s);
+int				is_empty(char *line);
+int				has_xpm_extension(char *path);
+int				has_cub_extension(char *filename);
+char			**ft_tabadd(char **tab, char *line);
+char			**ft_tabdup(char **tab);
+void			free_tab(char **tab);
 
 #endif

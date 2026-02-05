@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   line.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/05 20:52:00 by sberete           #+#    #+#             */
+/*   Updated: 2026/02/05 22:26:23 by sberete          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 int	parse_cub_line(t_data *cub3d, char *line)
@@ -10,7 +22,6 @@ int	parse_cub_line(t_data *cub3d, char *line)
 	trimmed = ft_strtrim_all(line);
 	if (!trimmed)
 		return (1);
-	printf("Parsing line: '%s'\n", trimmed); // <-- DEBUG
 	if (!ft_strncmp(trimmed, "NO", 2) || !ft_strncmp(trimmed, "SO", 2)
 		|| !ft_strncmp(trimmed, "WE", 2) || !ft_strncmp(trimmed, "EA", 2))
 	{
