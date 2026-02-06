@@ -44,13 +44,17 @@ void	draw_player_minimap(t_data *cub3d, int tile_size)
 
 static void	draw_minimap_tile(t_data *cub3d, char c, t_point pos, int size)
 {
+	if (c == ' ')
+		return ; // VOID => on ne dessine rien
+
 	if (c == '1')
 		draw_tile_minimap(cub3d, pos, size, COLOR_WALL);
 	else if (c == '2')
 		draw_tile_minimap(cub3d, pos, size, COLOR_DOOR);
-	else
+	else if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
 		draw_tile_minimap(cub3d, pos, size, COLOR_FLOOR);
 }
+
 
 static int	get_minimap_tile_size(t_data *cub3d)
 {
@@ -74,11 +78,12 @@ void	draw_minimap(t_data *cub3d)
 
 	map = cub3d->map.grid;
 	size = get_minimap_tile_size(cub3d);
+
 	y = 0;
-	while (map[y])
+	while (y < cub3d->map.height)
 	{
 		x = 0;
-		while (map[y][x])
+		while (x < cub3d->map.width)
 		{
 			pos.x = x * size;
 			pos.y = y * size;
@@ -89,3 +94,4 @@ void	draw_minimap(t_data *cub3d)
 	}
 	draw_player_minimap(cub3d, size);
 }
+

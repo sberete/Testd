@@ -57,10 +57,12 @@ int	is_empty(char *line)
 {
 	int	i;
 
+	if (!line)
+		return (1);
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ' && line[i] != '\n' && line[i] != '\t')
+		if (line[i] != ' ' && line[i] != '\t')
 			return (0);
 		i++;
 	}

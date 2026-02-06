@@ -52,10 +52,27 @@ char	**ft_tabadd(char **tab, char *line)
 	return (new_tab);
 }
 
+static int	map_linelen(char *s)
+{
+	int	i = 0;
+
+	while (s && s[i] && s[i] != '\n' && s[i] != '\r')
+		i++;
+	return (i);
+}
+
 void	add_map_line(t_data *cub3d, char *line)
 {
-	cub3d->map.grid = ft_tabadd(cub3d->map.grid, ft_strdup(line));
+	char	*dup;
+	int		len;
+
+	len = map_linelen(line);
+	dup = ft_substr(line, 0, len); // enlève \n/\r, garde les espaces
+	if (!dup)
+		return ;
+	cub3d->map.grid = ft_tabadd(cub3d->map.grid, dup);
 }
+
 
 char	*normalize_map_line(char *line, int width)
 {
@@ -63,27 +80,29 @@ char	*normalize_map_line(char *line, int width)
 	char	*new_line;
 	int		i;
 
-	i = 0;
 	len = ft_strlen(line);
 	new_line = malloc(width + 1);
 	if (!new_line)
 		return (NULL);
+	i = 0;
 	while (i < width)
 	{
-		if (i < len)
+		if (i < len && line[i] != '\n' && line[i] != '\r')
 		{
-			if (line[i] == ' ' || line[i] == '\t')
-				new_line[i] = '0';
+			if (line[i] == '\t')
+				new_line[i] = ' ';
 			else
-				new_line[i] = line[i];
+				new_line[i] = line[i]; // garde ' ' tel quel
 		}
 		else
-			new_line[i] = '0';
+			new_line[i] = ' '; // padding => VOID
 		i++;
 	}
 	new_line[width] = '\0';
 	return (new_line);
 }
+
+
 
 void	normalize_map_grid(t_data *cub3d)
 {

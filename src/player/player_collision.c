@@ -25,7 +25,7 @@ int	is_wall(t_data *cub3d, double x, double y)
 		|| map_x >= cub3d->map.width)
 		return (1);
 	cell = cub3d->map.grid[map_y][map_x];
-	if (cell == '1')
+	if (cell == '1' || cell == ' ' || cell == '\t')
 		return (1);
 	if (cell == '2')
 	{
