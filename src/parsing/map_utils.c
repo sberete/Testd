@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sxriimu <sxriimu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:52:20 by sberete           #+#    #+#             */
-/*   Updated: 2026/02/06 20:00:47 by sxriimu          ###   ########.fr       */
+/*   Updated: 2026/02/06 21:25:39 by sberete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,6 @@ int	is_map_line(char *line)
 		i++;
 	}
 	return (1);
-}
-
-char	**ft_tabadd(char **tab, char *line)
-{
-	int		len;
-	char	**new_tab;
-	int		i;
-
-	i = 0;
-	len = ft_tablen(tab);
-	new_tab = malloc(sizeof(char *) * (len + 2));
-	if (!new_tab)
-		return (NULL);
-	while (i < len)
-	{
-		new_tab[i] = tab[i];
-		i++;
-	}
-	new_tab[len] = line;
-	new_tab[len + 1] = NULL;
-	free(tab);
-	return (new_tab);
 }
 
 static int	map_linelen(char *s)

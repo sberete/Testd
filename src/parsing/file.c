@@ -3,66 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sxriimu <sxriimu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:58:44 by sberete           #+#    #+#             */
-/*   Updated: 2026/02/06 20:01:57 by sxriimu          ###   ########.fr       */
+/*   Updated: 2026/02/06 21:28:06 by sberete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static int	process_line_before_map(t_data *cub3d, char *line)
+static int	handle_before_map(char *line, char *trimmed,
+								t_data *cub3d, bool *map_started)
 {
-	if (parse_cub_line(cub3d, line))
-		return (1);
-	return (0);
-}
-
-static int	process_map_line(t_data *cub3d, char *line)
-{
-	if (!is_map_line(line))
-		return (ft_putendl_fd("Invalid line after map", 2), 1);
-	add_map_line(cub3d, line);
-	return (0);
-}
-
-static void	chomp_newline(char *s)
-{
-	int	len;
-
-	if (!s)
-		return ;
-	len = ft_strlen(s);
-	while (len > 0 && (s[len - 1] == '\n' || s[len - 1] == '\r'))
-		s[--len] = '\0';
-}
-
-char	*next_raw_line(int fd)
-{
-	char	*line;
-
-	line = get_next_line(fd);
-	if (!line)
-		return (NULL);
-	chomp_newline(line);
-	return (line);
-}
-
-static int	is_empty_line(char *s)
-{
-	int	i;
-
-	if (!s)
-		return (1);
-	i = 0;
-	while (s[i])
+	if (is_empty_line(trimmed))
+		return (0);
+	if (is_map_line(line))
 	{
-		if (s[i] != ' ' && s[i] != '\t')
-			return (0);
-		i++;
+		*map_started = true;
+		add_map_line(cub3d, line);
+		return (0);
 	}
-	return (1);
+	if (process_line_before_map(cub3d, trimmed))
+		return (1);
+	return (0);
+}
+
+static int	handle_map(char *line, char *trimmed, t_data *cub3d)
+{
+	if (is_empty_line(trimmed))
+	{
+		ft_putendl_fd("Invalid empty line inside/after map", 2);
+		return (1);
+	}
+	if (process_map_line(cub3d, line))
+		return (1);
+	return (0);
 }
 
 static int	parse_lines(int fd, t_data *cub3d, bool *map_started)
@@ -78,30 +53,12 @@ static int	parse_lines(int fd, t_data *cub3d, bool *map_started)
 			return (free(line), 1);
 		if (!*map_started)
 		{
-			if (is_empty_line(trimmed))
-			{
-				free(trimmed);
-				free(line);
-				line = next_raw_line(fd);
-				continue ;
-			}
-			if (is_map_line(line))
-			{
-				*map_started = true;
-				add_map_line(cub3d, line);
-			}
-			else
-			{
-				if (process_line_before_map(cub3d, trimmed))
-					return (free(trimmed), free(line), 1);
-			}
+			if (handle_before_map(line, trimmed, cub3d, map_started))
+				return (free(trimmed), free(line), 1);
 		}
 		else
 		{
-			if (is_empty_line(trimmed))
-				return (free(trimmed), free(line),
-					ft_putendl_fd("Invalid empty line inside/after map", 2), 1);
-			if (process_map_line(cub3d, line))
+			if (handle_map(line, trimmed, cub3d))
 				return (free(trimmed), free(line), 1);
 		}
 		free(trimmed);

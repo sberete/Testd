@@ -6,7 +6,7 @@
 /*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 19:46:50 by sxriimu           #+#    #+#             */
-/*   Updated: 2026/02/05 21:11:06 by sberete          ###   ########.fr       */
+/*   Updated: 2026/02/06 21:22:44 by sberete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,10 @@ int				check_map_char(t_map *map);
 int				check_map_player(t_map *map);
 int				check_map_empty_lines(t_map *map);
 int				validate_map(t_data *cub3d);
-
+int				process_line_before_map(t_data *cub3d, char *line);
+int				process_map_line(t_data *cub3d, char *line);
+char			*next_raw_line(int fd);
+int				is_empty_line(char *s);
 /* color utils */
 int				convert_rgb_string(char *str);
 

@@ -6,7 +6,7 @@
 /*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:07:38 by sberete           #+#    #+#             */
-/*   Updated: 2025/11/21 16:37:04 by sberete          ###   ########.fr       */
+/*   Updated: 2026/02/06 21:25:14 by sberete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ size_t	ft_tablen(char **t);
 char	*ft_join_sep(const char *a, const char *b, const char *c);
 char	**ft_tabdup(char **src);
 char	*get_next_line(int fd);
+char	**ft_tabadd(char **tab, char *line);
 
 #endif
