@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sxriimu <sxriimu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:58:44 by sberete           #+#    #+#             */
-/*   Updated: 2026/02/05 22:17:02 by sberete          ###   ########.fr       */
+/*   Updated: 2026/02/06 20:01:57 by sxriimu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*next_raw_line(int fd)
 	chomp_newline(line);
 	return (line);
 }
+
 static int	is_empty_line(char *s)
 {
 	int	i;
@@ -69,15 +70,14 @@ static int	parse_lines(int fd, t_data *cub3d, bool *map_started)
 	char	*line;
 	char	*trimmed;
 
-	line = next_raw_line(fd); // -> ligne RAW
+	line = next_raw_line(fd);
 	while (line)
 	{
-		trimmed = ft_strtrim_all(line); // OK pour tester/traiter les headers
+		trimmed = ft_strtrim_all(line);
 		if (!trimmed)
 			return (free(line), 1);
 		if (!*map_started)
 		{
-			// ignorer lignes vides AVANT map
 			if (is_empty_line(trimmed))
 			{
 				free(trimmed);
@@ -85,26 +85,22 @@ static int	parse_lines(int fd, t_data *cub3d, bool *map_started)
 				line = next_raw_line(fd);
 				continue ;
 			}
-			// map détectée sur la ligne RAW (pas trimmed !)
 			if (is_map_line(line))
 			{
 				*map_started = true;
-				add_map_line(cub3d, line); // stocke RAW
+				add_map_line(cub3d, line);
 			}
 			else
 			{
-				// ici tu appelles ton parse header (textures/couleurs)
 				if (process_line_before_map(cub3d, trimmed))
 					return (free(trimmed), free(line), 1);
 			}
 		}
 		else
 		{
-			// après map: ligne vide => invalide
 			if (is_empty_line(trimmed))
 				return (free(trimmed), free(line),
 					ft_putendl_fd("Invalid empty line inside/after map", 2), 1);
-			// traiter ligne de map en RAW
 			if (process_map_line(cub3d, line))
 				return (free(trimmed), free(line), 1);
 		}

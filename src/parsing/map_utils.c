@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sxriimu <sxriimu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 20:52:20 by sberete           #+#    #+#             */
-/*   Updated: 2026/02/05 22:28:31 by sberete          ###   ########.fr       */
+/*   Updated: 2026/02/06 20:00:47 by sxriimu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,9 @@ char	**ft_tabadd(char **tab, char *line)
 
 static int	map_linelen(char *s)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (s && s[i] && s[i] != '\n' && s[i] != '\r')
 		i++;
 	return (i);
@@ -67,12 +68,11 @@ void	add_map_line(t_data *cub3d, char *line)
 	int		len;
 
 	len = map_linelen(line);
-	dup = ft_substr(line, 0, len); // enlève \n/\r, garde les espaces
+	dup = ft_substr(line, 0, len);
 	if (!dup)
 		return ;
 	cub3d->map.grid = ft_tabadd(cub3d->map.grid, dup);
 }
-
 
 char	*normalize_map_line(char *line, int width)
 {
@@ -92,17 +92,15 @@ char	*normalize_map_line(char *line, int width)
 			if (line[i] == '\t')
 				new_line[i] = ' ';
 			else
-				new_line[i] = line[i]; // garde ' ' tel quel
+				new_line[i] = line[i];
 		}
 		else
-			new_line[i] = ' '; // padding => VOID
+			new_line[i] = ' ';
 		i++;
 	}
 	new_line[width] = '\0';
 	return (new_line);
 }
-
-
 
 void	normalize_map_grid(t_data *cub3d)
 {

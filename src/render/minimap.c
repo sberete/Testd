@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sxriimu <sxriimu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 21:50:09 by sberete           #+#    #+#             */
-/*   Updated: 2026/02/05 21:51:42 by sberete          ###   ########.fr       */
+/*   Updated: 2026/02/06 20:00:08 by sxriimu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ void	draw_player_minimap(t_data *cub3d, int tile_size)
 static void	draw_minimap_tile(t_data *cub3d, char c, t_point pos, int size)
 {
 	if (c == ' ')
-		return ; // VOID => on ne dessine rien
-
+		return ;
 	if (c == '1')
 		draw_tile_minimap(cub3d, pos, size, COLOR_WALL);
 	else if (c == '2')
@@ -54,7 +53,6 @@ static void	draw_minimap_tile(t_data *cub3d, char c, t_point pos, int size)
 	else if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
 		draw_tile_minimap(cub3d, pos, size, COLOR_FLOOR);
 }
-
 
 static int	get_minimap_tile_size(t_data *cub3d)
 {
@@ -78,7 +76,6 @@ void	draw_minimap(t_data *cub3d)
 
 	map = cub3d->map.grid;
 	size = get_minimap_tile_size(cub3d);
-
 	y = 0;
 	while (y < cub3d->map.height)
 	{
@@ -94,4 +91,3 @@ void	draw_minimap(t_data *cub3d)
 	}
 	draw_player_minimap(cub3d, size);
 }
-
