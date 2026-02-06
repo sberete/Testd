@@ -6,7 +6,7 @@
 /*   By: sberete <sberete@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 09:49:48 by sberete           #+#    #+#             */
-/*   Updated: 2026/02/05 22:30:51 by sberete          ###   ########.fr       */
+/*   Updated: 2026/02/06 23:05:52 by sberete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,33 +30,54 @@ static int	is_only_digits(char *s)
 	return (1);
 }
 
-int	convert_rgb_string(char *str)
+static int    trim_rgb_parts(char **split)
 {
-	char	**split;
-	int		rgb;
-	int		r;
-	int		g;
-	int		b;
+    char    *trimmed;
 
-	if (!str)
-		return (-1);
-	split = ft_split(str, ',');
-	if (!split || !split[0] || !split[1] || !split[2] || split[3])
-		return (free_tab(split), -1);
-	split[0] = ft_strtrim_all(split[0]);
-	split[1] = ft_strtrim_all(split[1]);
-	split[2] = ft_strtrim_all(split[2]);
-	if (!is_only_digits(split[0]) || !is_only_digits(split[1])
-		|| !is_only_digits(split[2]))
-		return (free_tab(split), -1);
-	r = ft_atoi(split[0]);
-	g = ft_atoi(split[1]);
-	b = ft_atoi(split[2]);
-	free_tab(split);
-	if (validate_rgb(r, g, b))
-		return (-1);
-	rgb = (r << 16) | (g << 8) | b;
-	return (rgb);
+    trimmed = ft_strtrim_all(split[0]);
+    if (!trimmed)
+        return (free_tab(split), 1);
+    free(split[0]);
+    split[0] = trimmed;
+    trimmed = ft_strtrim_all(split[1]);
+    if (!trimmed)
+        return (free_tab(split), 1);
+    free(split[1]);
+    split[1] = trimmed;
+    trimmed = ft_strtrim_all(split[2]);
+    if (!trimmed)
+        return (free_tab(split), 1);
+    free(split[2]);
+    split[2] = trimmed;
+    return (0);
+}
+
+int    convert_rgb_string(char *str)
+{
+    char    **split;
+    int        rgb;
+    int        r;
+    int        g;
+    int        b;
+
+    if (!str)
+        return (-1);
+    split = ft_split(str, ',');
+    if (!split || !split[0] || !split[1] || !split[2] || split[3])
+        return (free_tab(split), -1);
+    if (trim_rgb_parts(split))
+        return (-1);
+    if (!is_only_digits(split[0]) || !is_only_digits(split[1])
+        || !is_only_digits(split[2]))
+        return (free_tab(split), -1);
+    r = ft_atoi(split[0]);
+    g = ft_atoi(split[1]);
+    b = ft_atoi(split[2]);
+    free_tab(split);
+    if (validate_rgb(r, g, b))
+        return (-1);
+    rgb = (r << 16) | (g << 8) | b;
+    return (rgb);
 }
 
 static int	assign_color(t_color *color, char key, char *value, int rgb)
